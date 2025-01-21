@@ -2,9 +2,10 @@ let listResults = []
 let listAllMovies = []
 const url = "http://localhost:8000/api/v1/titles/"
 const urlCat = 'http://localhost:8000/api/v1/genres/'
-let imbd_max = 9
+const urlPivot = 'http://localhost:8000/api/v1/titles/?imdb_score_min='
+let imbd_max = 11
 const threeCategories = {'Drama': [], 'Comedy': [], 'Crime': []}
-const oneCategory = []
+let oneCategory = {}
 
 
 // Geting the best movie
@@ -18,26 +19,55 @@ function bestMovie(){
             } else {
                 console.log("Etape A1")
                 createUrlsCategory(threeCategories, data)
-                populateTopMovie(data.results[0])
+                populateTopMovie(data.results[1])
             }
         })
 }
 
 
 function populateTopMovie(content){
-    const topMovieContent = document.querySelector('#top-movie');
-    const imageMovie = document.createElement('img')
-    const title = document.createElement('h4')
-    let description = document.createElement("p")
-    imageMovie.src = content.image_url
-    title.textContent = content.title 
-    description.textContent = content.description
-    // Adding attributes to continer
-    topMovieContent.appendChild(imageMovie)
-    topMovieContent.appendChild(title)
-    topMovieContent.appendChild(description)
+    fetch(content.url)
+    .then(response => response.json())
+    .then(data =>{
+        const topMovieContent = document.querySelector('#top-movie');
+        const imageMovie = document.createElement('img')
+        const title = document.createElement('h4')
+        const button = document.createElement('button')
+        let description = document.createElement("p")
+        imageMovie.src = data.image_url
+        title.textContent = data.title
+        description.textContent = data.description
+        button.textContent = "Détails"
+        button.id = "movie-modal"
+        // Adding attributes to continer
+        topMovieContent.appendChild(imageMovie)
+        topMovieContent.appendChild(title)
+        topMovieContent.append(button)
+        topMovieContent.appendChild(description)
+        button.addEventListener('click', () => showMovieDetails(content));
+
+    })
+
 }
 
+
+function showMovieDetails(content) {
+    // Assuming you have a modal element with id 'movie-modal'
+    const modal = document.getElementById('movie-modal');
+    
+    // Populate modal content
+    modal.outerHTML = `
+        <h3>${content.title}</h3>
+        <img src="${content.image_url}" alt="${content.title}">
+        <p>Réalisé par ${content.directors}</p>
+
+        <p>${content.long_description}</p>
+        <p>Avec ${content.actors}</p>
+    `;
+    
+    // Open the modal (you might need to adjust this based on your modal library or framework)
+    modal.style.display = 'block';
+}
 
 // populating the categorie movies with their url
 function createUrlsCategory(categories_obj, movies){
@@ -66,7 +96,6 @@ function createUrlsCategory(categories_obj, movies){
 
 // adding movies to every categorie
 function addMoviesToCat(){
-    console.log("Three categories after... ", threeCategories)
     for (let [key, value] of Object.entries(threeCategories)) {
         const categs = document.querySelector(`#${key}`)
         for (let i = 0; i < value.length; i++) {            
@@ -123,37 +152,55 @@ function fetchAndPopulateSelect() {
     }
     selectList.addEventListener('change', function() {
         afterSelectCat(this.value);
+        populateCategory(url, this.value)
     });
     parent.appendChild(selectList)
 }
 
 
+// populating data for choosed category
+function populateCategory(url, chooseCat){
+    fetch(`${url}?imdb_score_min=${encodeURIComponent(imbd_max)}`)
+    .then(response => response.json())
+    .then(data => {
+        if (data.count < 1){
+            imbd_max--;
+            populateCategory()
+        } else {
+            creatingChoosedCat(data, chooseCat)
+            afterSelectCat(chooseCat)
+            console.log("Category hList", oneCategory)           
+        }
+    })
+}
+
+
+function creatingChoosedCat(data, choosed){
+    oneCategory = {}
+    oneCategory[choosed] = [] 
+    for (let i = 0; i < data.results.length; i++){
+        if (data.results[i].genres.includes(choosed)){
+            oneCategory[choosed].push(data.results[i])
+        }
+    }
+}
+
 function afterSelectCat(choosed){
-    const categoryDiv = document.querySelector("#choosedCategory")
+    let categoryDiv = document.querySelector("#choosedCategory")
     let nameCategory = document.createElement('h5')
-    nameCategory.id = 'choosedCat'
+    nameCategory.id = choosed
     nameCategory.innerHTML = choosed
     categoryDiv.appendChild(nameCategory)
+}
 
-    // adding movies grids
-    for (let i = 0; i < value.length; i++) {            
-        let gridItem = document.createElement('div');
-        gridItem.className = 'grid-item'
-        gridItem.id = key + i
-        fetch(value[i])
-            .then(response => response.json())
-            .then(data => {
-            moviesCat = data
-            let imgMov = document.createElement('img')
-            let title = document.createElement('h4')
-            imgMov.src = data.image_url
-            title.textContent = data.title
-            gridItem.appendChild(title)
-            gridItem.appendChild(imgMov)
-            categs.appendChild(gridItem)
-            })
-    } 
-    console.log("Choosed option: ", choosed)
+
+function itemsChoosedCategory(){
+    const categoryDiv = document.querySelector("#choosedCategory")
+    let gridItem = document.createElement('div');
+    gridItem.className = 'grid-item'
+    console.log("Data at grid: ", oneCategory?.choosed)
+
+    categoryDiv.append(gridItem)
 
 }
 
