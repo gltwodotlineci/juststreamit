@@ -4,35 +4,44 @@ const url = "http://localhost:8000/api/v1/titles/"
 const urlCat = 'http://localhost:8000/api/v1/genres/'
 let imbd_max = 9
 const threeCategories = {'Drama': [], 'Comedy': [], 'Crime': []}
+const oneCategory = []
 
 
-// Geting the best movies
+// Geting the best movie
 function bestMovie(){
     fetch(`${url}?imdb_score_min=${encodeURIComponent(imbd_max)}`)
         .then(response => response.json())
         .then(data => {
-            if (data.results.length < 1) {
+            if (data.count < 1){
                 imbd_max--;
                 bestMovie()
-            }
-            else{
-                const topMovies = data
-                const topMovie = topMovies.results[0]
-                movie_url = topMovie.url
-                fetch(movie_url)
-                    .then(response => response.json())
-                    .then(item => {
-                        populateTopMovie(item)
-                    })
-                    // calling the fonction to populate categories url
-                    createUrlsCategory(threeCategories, topMovies)
-                    console.log("All movies Top: ", threeCategories.Comedy)
+            } else {
+                console.log("Etape A1")
+                createUrlsCategory(threeCategories, data)
+                populateTopMovie(data.results[0])
             }
         })
 }
 
+
+function populateTopMovie(content){
+    const topMovieContent = document.querySelector('#top-movie');
+    const imageMovie = document.createElement('img')
+    const title = document.createElement('h4')
+    let description = document.createElement("p")
+    imageMovie.src = content.image_url
+    title.textContent = content.title 
+    description.textContent = content.description
+    // Adding attributes to continer
+    topMovieContent.appendChild(imageMovie)
+    topMovieContent.appendChild(title)
+    topMovieContent.appendChild(description)
+}
+
+
 // populating the categorie movies with their url
 function createUrlsCategory(categories_obj, movies){
+    console.log("Etape B1")
     for (let [key, value] of Object.entries(categories_obj)) {
         for (let i = 0; i < movies.results.length; i++) {
             if (value.length < 6){
@@ -48,7 +57,35 @@ function createUrlsCategory(categories_obj, movies){
         .then(data => {
            createUrlsCategory(categories_obj, data)
         })
+    } else{
+        console.log("Etap C1")
+        addMoviesToCat()
     }
+}
+
+
+// adding movies to every categorie
+function addMoviesToCat(){
+    console.log("Three categories after... ", threeCategories)
+    for (let [key, value] of Object.entries(threeCategories)) {
+        const categs = document.querySelector(`#${key}`)
+        for (let i = 0; i < value.length; i++) {            
+            let gridItem = document.createElement('div');
+            gridItem.className = 'grid-item'
+            gridItem.id = key + i
+            fetch(value[i])
+                .then(response => response.json())
+                .then(data => {
+                let imgMov = document.createElement('img')
+                let title = document.createElement('h5')
+                imgMov.src = data.image_url
+                title.textContent = data.title
+                gridItem.appendChild(title)
+                gridItem.appendChild(imgMov)
+                categs.appendChild(gridItem)
+                })
+        }      
+    }       
 }
 
 
@@ -71,24 +108,10 @@ function generalFetch(url){
 }
 
 
-function populateTopMovie(content){
-    const topMovieContent = document.querySelector('#top-movie');
-    const imageMovie = document.createElement('img')
-    const title = document.createElement('h4')
-    let description = document.createElement("p")
-    imageMovie.src = content.image_url
-    title.textContent = content.title 
-    description.textContent = content.description
-    // Adding attributes to continer
-    topMovieContent.appendChild(imageMovie)
-    topMovieContent.appendChild(title)
-    topMovieContent.appendChild(description)
-}
-
-
 function fetchAndPopulateSelect() {
     const parent = document.querySelector('#parent');
     const selectList = document.createElement("select");
+    selectList.id = "chooseCat"
     // selectList.id = "SelectCategory"
     for (let i = 0; i < listResults.length; i++) {
         const item = listResults[i];
@@ -96,18 +119,44 @@ function fetchAndPopulateSelect() {
         option.value = item.name
         option.textContent = item.name;
         selectList.appendChild(option);        
+
     }
-    selectList.addEventListener('change', getCategorySelected)
+    selectList.addEventListener('change', function() {
+        afterSelectCat(this.value);
+    });
     parent.appendChild(selectList)
 }
 
-// Geting the selected category:
-function getCategorySelected(event){
-    const containerCat = document.createElement('div')
-    console.log(event.target.value)
+
+function afterSelectCat(choosed){
+    const categoryDiv = document.querySelector("#choosedCategory")
+    let nameCategory = document.createElement('h5')
+    nameCategory.id = 'choosedCat'
+    nameCategory.innerHTML = choosed
+    categoryDiv.appendChild(nameCategory)
+
+    // adding movies grids
+    for (let i = 0; i < value.length; i++) {            
+        let gridItem = document.createElement('div');
+        gridItem.className = 'grid-item'
+        gridItem.id = key + i
+        fetch(value[i])
+            .then(response => response.json())
+            .then(data => {
+            moviesCat = data
+            let imgMov = document.createElement('img')
+            let title = document.createElement('h4')
+            imgMov.src = data.image_url
+            title.textContent = data.title
+            gridItem.appendChild(title)
+            gridItem.appendChild(imgMov)
+            categs.appendChild(gridItem)
+            })
+    } 
+    console.log("Choosed option: ", choosed)
+
 }
 
-  
+
 // Call the function after the DOM is fully loaded
-document.addEventListener('DOMContentLoaded', generalFetch(urlCat));
-bestMovie()
+document.addEventListener('DOMContentLoaded', bestMovie(), generalFetch(urlCat));
