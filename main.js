@@ -95,10 +95,14 @@ function addMoviesToCat(){
                 .then(data => {
                 let imgMov = document.createElement('img')
                 let title = document.createElement('h5')
+                const button = document.createElement('button')
                 imgMov.src = data.image_url
                 title.textContent = data.title
+                button.id = data.id
+                button.textContent = "Détails"
                 gridItem.appendChild(title)
                 gridItem.appendChild(imgMov)
+                gridItem.appendChild(button)
                 categs.appendChild(gridItem)
                 })
         }      
@@ -126,7 +130,6 @@ function generalFetch(url){
 
 
 function fetchAndPopulateSelect() {
-    console.log("Etap 0")
     const parent = document.querySelector('#parent');
     const selectList = document.createElement("select");
     selectList.id = "chooseCat"
@@ -140,16 +143,16 @@ function fetchAndPopulateSelect() {
 
     }
     selectList.addEventListener('change', function() {
+        oneCategory = []
         afterSelectCat(this.value);
-        populateCategory(url, this.value)
+        populateCategory(this.value)
     });
     parent.appendChild(selectList)
 }
 
 
 // populating data for choosed category
-function populateCategory(url, chooseCat){
-    console.log("Etap 2")
+function populateCategory(chooseCat){
     fetch("http://localhost:8000/api/v1/titles/?sort_by=-imdb_score")//{encodeURIComponent(imbd_max)}`)
     .then(response => response.json())
     .then(data => {
@@ -159,14 +162,10 @@ function populateCategory(url, chooseCat){
 
 
 function creatingChoosedCat(data, choosed){
-    console.log("Etap 3")
-    count = 0
-    oneCategory = []
     for (let i = 0; i < data.results.length; i++){
         if (data.results[i].genres.includes(choosed)){
-            if (oneCategory.length < 6){
-                console.log("True/False", oneCategory)
-                oneCategory.push(data.results[i])
+            if (oneCategory.length < 6 || oneCategory == []){
+                oneCategory.push(data.results[i].url)
             }
         }
     }
@@ -177,36 +176,39 @@ function creatingChoosedCat(data, choosed){
                 creatingChoosedCat(item, choosed)
             })
     } else{
-        count++;
-        if (count < 9){
-            itemsChoosedCategory(oneCategory)
-        }
-        
+        itemsChoosedCategory(choosed)
     }
 }
 
 
 function afterSelectCat(choosed){
-    console.log("Etap 1")
-    let categoryDiv = document.querySelector("#choosenCategory")
-    let nameCategory = document.createElement('h5')
-    nameCategory.id = choosed
-    nameCategory.innerHTML = choosed
-    categoryDiv.appendChild(nameCategory)
+    const title = document.querySelector("#choosedTitle")
+    title.textContent = choosed
 }
 
 
-function itemsChoosedCategory(data){
-    const categoryDiv = document.querySelector("#choosenCategory")
-    let gridItem = document.createElement('div');
-    let imgMov = document.createElement('img')
-    let title = document.createElement('h5')
-    imgMov.src = data.results.image_url
-    title.textContent = data.results.title
-    gridItem.className = 'grid-item'
-    gridItem.appendChild(title)
-    gridItem.appendChild(imgMov)
-    categoryDiv.append(gridItem)
+function itemsChoosedCategory(){
+    const categoryDiv = document.querySelector("#choosenCategory")    
+    // creating and populating 6 films grid
+    for (let i = 0; i < oneCategory.length; i++) {
+        fetch(oneCategory[i])
+            .then(results => results.json())
+            .then(data => {
+                let gridItem = document.createElement('div');
+                gridItem.className = 'grid-item'
+                let imgMov = document.createElement('img')
+                let title = document.createElement('h5')
+                const button = document.createElement('button')
+                button.id = `choosed${data.id}`
+                button.textContent = "Détils"
+                imgMov.src = data.image_url
+                title.textContent = data.title
+                gridItem.appendChild(title)
+                gridItem.appendChild(imgMov)
+                gridItem.appendChild(button)
+                categoryDiv.append(gridItem)
+            })
+    }
 }
 
 
