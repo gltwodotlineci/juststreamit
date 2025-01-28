@@ -12,6 +12,7 @@ body {
     height: 100vh;
     overflow: auto;
 }
+
 .category-name {
     position: absolute;
     top: 20px;
@@ -19,6 +20,7 @@ body {
     font-size: 24px;
     font-weight: bold;
 }
+
 .grid-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -26,12 +28,14 @@ body {
     width: 80%;
     max-width: 800px;
 }
+
 .grid-item {
     background-color: #f0f0f0;
     border: 1px solid #ccc;
     padding: 10px;
     text-align: center;
 }
+
 .select-container {
     margin-top: 30px; /* Space between grid and select container */
 }
@@ -51,3 +55,45 @@ select {
     margin-bottom: 15px;
 }
 
+
+/* MODAL, Main movie */
+.modal-button {
+    background-color: #ec0a19;
+    border: 0;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* box shadow to add depth */
+    color: #fff;
+    font-size: 18px;
+    padding: 10px 25px;
+}
+
+.modal-container {
+    background-color: rgba(0, 0, 0, 0.3);
+    /* Center modal */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    opacity: 0; /* to be hidden by default */
+    pointer-events: none; /* so we can click the modal trigger */
+    top: 0;
+    left: 0;
+    height: 100vh; /* =100% of viewport height */
+    width: 100vw; /* = 100% of viewport width */
+    transition: opacity 0.3s ease;
+}
+
+.modal-container.show {
+    pointer-events: auto; /* set back the default value */
+    opacity: 1;
+  }
+  
+.modal-content {
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* box shadow to add depth */
+    padding: 30px 50px;
+    width: 600px;
+    max-width: 100%; /* Assures that it' ll be kept inside the browser width */
+    text-align: center;
+}

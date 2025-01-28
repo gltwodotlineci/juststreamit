@@ -7,6 +7,7 @@
 </head>
 <body>
 
+
 <div class="main">
     <div class="head-movie">
         <p>Meilleur Film</p>
@@ -37,6 +38,19 @@
 
     </div>
 </div>
+<div id="movie-modalA"></div>
+
+<script>
+
+open_modal_button.addEventListener("click", () => {
+  modalTopMovie.classList.add("show");
+});
+
+close_modal_button.addEventListener("click", () => {
+  modalTopMovie.classList.remove("show");
+});
+
+</script>
 
 </body>
 

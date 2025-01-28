@@ -30,7 +30,8 @@ function populateTopMovie(content){
         title.textContent = data.title
         description.textContent = data.description
         button.textContent = "Détails"
-        button.id = "movie-modal"
+        button.id = "topMovieModal"
+        button.className = "modal-button"
         // Adding attributes to continer
         topMovieContent.appendChild(imageMovie)
         topMovieContent.appendChild(title)
@@ -43,16 +44,28 @@ function populateTopMovie(content){
 
 function showMovieDetails(content) {
     // Creating modal with Top rated movie'
-    const modal = document.getElementById('movie-modal');
-    
-    // Populate modal content
-    modal.outerHTML = `
-        <h3>${content.title}</h3>
-        <img src="${content.image_url}" alt="${content.title}">
-        <p>Réalisé par ${content.directors}</p>
+    const modal = document.getElementById('topMovieModal');
+    let modalTopMovie = document.createElement('div');
+    modalTopMovie.id = "modalTopMovie"
 
-        <p>${content.long_description}</p>
-        <p>Avec ${content.actors}</p>
+    // Populate modal content
+    modal.innerHTML = `
+    <div id="mainMovieMod" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>${content.title}</h3>
+            <img src="${content.image_url}" alt="${content.title}">
+            <p>Réalisé par ${content.directors}</p>
+
+            <p>${content.long_description}</p>
+            <p>Avec ${content.actors}</p>
+        
+            <button class="modal-button" id="close_modal_button">
+                Fermer
+            </button>
+        
+        </div>
+    </div>
     `;
     
     // Open the modal
