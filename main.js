@@ -1,9 +1,6 @@
 let listResults = []
 const url = "http://localhost:8000/api/v1/titles/"
 const urlCat = 'http://localhost:8000/api/v1/genres/'
-let imbd_max = 11
-const threeCategories = {'Drama': [], 'Comedy': [], 'Crime': []}
-let oneCategory = []
 
 
 // Geting the best movie
@@ -11,8 +8,8 @@ function bestMovie(){
     fetch("http://localhost:8000/api/v1/titles/?sort_by=-imdb_score")
         .then(response => response.json())
         .then(data => {
-            createUrlsCategory(threeCategories, data)
             populateTopMovie(data.results[0])
+            createThreeCategories()
         })
 }
 
@@ -45,15 +42,13 @@ function populateTopMovie(content){
 function showMovieDetails(content) {
     // Creating modal with Top rated movie'
     const modal = document.getElementById('topMovieModal');
-    let modalTopMovie = document.createElement('div');
-    modalTopMovie.id = "modalTopMovie"
 
     // Populate modal content
     modal.innerHTML = `
     <div id="mainMovieMod" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <h3>${content.title}</h3>
+            <p>${content.title}</p>
             <img src="${content.image_url}" alt="${content.title}">
             <p>Réalisé par ${content.directors}</p>
 
@@ -72,56 +67,55 @@ function showMovieDetails(content) {
     modal.style.display = 'block';
 }
 
-// Populating the categorie movies with their url
-function createUrlsCategory(categories_obj, movies){
-    for (let [key, value] of Object.entries(categories_obj)) {
-        for (let i = 0; i < movies.results.length; i++) {
-            if (value.length < 6){
-                if (movies.results[i].genres.includes(key)){
-                    value.push(movies.results[i].url);
+// Calling and creating objects for 3 categories
+function createThreeCategories(){
+    const categories = ['Drama', 'Comedy', 'Crime']
+    for (let x = 0; x < categories.length; x++) {
+        const categoriesList = []
+        fetch(`http://localhost:8000/api/v1/titles/?sort_by=-imdb_score&genre=${categories[x]}`)
+            .then(response => response.json())
+            .then(data =>{
+                for (let i = 0; i < data.results.length; i++) {
+                    categoriesList.push(data.results[i])                    
                 }
-            }
-        }
-    }
-    if (categories_obj.Drama.length < 6 || categories_obj.Comedy.length < 6 || categories_obj.Crime.length < 6){
-        fetch(movies.next)
-        .then(response => response.json())
-        .then(data => {
-           createUrlsCategory(categories_obj, data)
-        })
-    } else{
-        addMoviesToCat()
-    }
-}
-
-
-// adding movies to every categorie
-function addMoviesToCat(){
-    for (let [key, value] of Object.entries(threeCategories)) {
-        const categs = document.querySelector(`#${key}`)
-        for (let i = 0; i < value.length; i++) {            
-            let gridItem = document.createElement('div');
-            gridItem.className = 'grid-item'
-            gridItem.id = key + i
-            fetch(value[i])
-                .then(response => response.json())
-                .then(data => {
-                let imgMov = document.createElement('img')
-                let title = document.createElement('h5')
-                const button = document.createElement('button')
-                imgMov.src = data.image_url
-                title.textContent = data.title
-                button.id = data.id
-                button.textContent = "Détails"
-                gridItem.appendChild(title)
-                gridItem.appendChild(imgMov)
-                gridItem.appendChild(button)
-                categs.appendChild(gridItem)
+                fetch(data.next)
+                    .then(response => response.json())
+                    .then(data2 => {
+                    categoriesList.push(data2.results[0])
+                    addMoviesToCat(categoriesList, categories[x])
                 })
-        }      
-    }       
+        })
+    }
 }
 
+
+// adding movies to every categorie and creating grids
+function addMoviesToCat(categData, key){
+    const categs = document.querySelector(`#${key}`)
+    for (let i = 0; i < categData.length; i++) {
+        let gridItem = document.createElement('div')
+        let banner = document.createElement('div')
+        banner.className = "cat-banner"
+        gridItem.className = 'grid-item'
+        gridItem.id = key + i
+        let imgMov = document.createElement('img')
+        let title = document.createElement('h3')
+        title.className = 'top-left'
+        let button = document.createElement('button')
+        button.className = 'top-right'
+        imgMov.src = categData[i].image_url
+        imgMov.style = "width:100%"
+        title.textContent = categData[i].title
+        button.id = categData[i].id
+        button.textContent = "Détails"
+        banner.appendChild(title)        
+        gridItem.appendChild(button)
+        gridItem.appendChild(banner)
+        gridItem.appendChild(imgMov)
+        categs.appendChild(gridItem)
+        //button.addEventListener('click', () => showMovieDetails(categData));
+        }      
+}
 
 // Providing movies by category
 function generalFetch(url){
@@ -152,8 +146,7 @@ function fetchAndPopulateSelect() {
         const option = document.createElement('option');
         option.value = item.name
         option.textContent = item.name;
-        selectList.appendChild(option);        
-
+        selectList.appendChild(option);
     }
     selectList.addEventListener('change', function() {
         oneCategory = []
@@ -166,31 +159,22 @@ function fetchAndPopulateSelect() {
 
 // populating data for choosed category
 function populateCategory(chooseCat){
-    fetch("http://localhost:8000/api/v1/titles/?sort_by=-imdb_score")//{encodeURIComponent(imbd_max)}`)
+    const ctegoryListData = []
+    fetch(`http://localhost:8000/api/v1/titles/?sort_by=-imdb_score&genre=${chooseCat}`)
     .then(response => response.json())
     .then(data => {
-        creatingChoosedCat(data, chooseCat)
-    })
-}
-
-
-function creatingChoosedCat(data, choosed){
-    for (let i = 0; i < data.results.length; i++){
-        if (data.results[i].genres.includes(choosed)){
-            if (oneCategory.length < 6 || oneCategory == []){
-                oneCategory.push(data.results[i].url)
-            }
+        for (let i = 0; i < data.results.length; i++) {
+            ctegoryListData.push(data.results[i])
         }
-    }
-    if (oneCategory.length < 6){
         fetch(data.next)
-            .then(response => response.json())
-            .then(item => {
-                creatingChoosedCat(item, choosed)
-            })
-    } else{
-        itemsChoosedCategory(choosed)
-    }
+        .then(response => response.json())
+        .then(data2 =>{
+            ctegoryListData.push(data2.results[0])
+        
+        itemsChoosedCategory(ctegoryListData)
+        })
+    })
+
 }
 
 
@@ -200,27 +184,33 @@ function afterSelectCat(choosed){
 }
 
 
-function itemsChoosedCategory(){
+function itemsChoosedCategory(data){
     const categoryDiv = document.querySelector("#choosenCategory")    
+    categoryDiv.innerHTML = ""
     // creating and populating 6 films grid
-    for (let i = 0; i < oneCategory.length; i++) {
-        fetch(oneCategory[i])
-            .then(results => results.json())
-            .then(data => {
-                let gridItem = document.createElement('div');
-                gridItem.className = 'grid-item'
-                let imgMov = document.createElement('img')
-                let title = document.createElement('h5')
-                const button = document.createElement('button')
-                button.id = `choosed${data.id}`
-                button.textContent = "Détils"
-                imgMov.src = data.image_url
-                title.textContent = data.title
-                gridItem.appendChild(title)
-                gridItem.appendChild(imgMov)
-                gridItem.appendChild(button)
-                categoryDiv.append(gridItem)
-            })
+    for (let i = 0; i < data.length; i++) {
+        let gridItem = document.createElement('div')
+        let banner = document.createElement('div')
+        banner.className = "cat-banner"
+
+        gridItem.id = `choosenGrid${data[i].id}`
+        gridItem.className = 'grid-item'
+        let imgMov = document.createElement('img')
+        let title = document.createElement('h3')
+        title.className = 'top-left'
+        let button = document.createElement('button')
+        button.className = 'top-right'
+        button.id = `choosed${data[i].id}`
+        button.textContent = "Détils"
+        imgMov.src = data[i].image_url
+        imgMov.style = "width:100%"
+        title.textContent = data[i].title
+        banner.appendChild(title)
+        gridItem.appendChild(button)
+        gridItem.appendChild(banner)
+        gridItem.appendChild(imgMov)
+        categoryDiv.append(gridItem)
+        button.addEventListener('click', () => showMovieDetails(data));
     }
 }
 

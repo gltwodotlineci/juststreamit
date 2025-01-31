@@ -8,7 +8,7 @@ body {
 }
 
 .main{
-    width: 100%;
+    width: 90%;
     height: 100vh;
     overflow: auto;
 }
@@ -23,17 +23,55 @@ body {
 
 .grid-container {
     display: grid;
+    align-items: center;
     grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    width: 80%;
-    max-width: 800px;
+    margin: auto;
+}
+
+.category-title {
+    align-items: center;
+    gap: 5px;
+    margin: auto;
 }
 
 .grid-item {
+    position: relative;
     background-color: #f0f0f0;
     border: 1px solid #ccc;
     padding: 10px;
     text-align: center;
+}
+
+.cat-banner {
+    position: absolute;
+    width: 95%;
+    height: 30%;
+    top: 20%;
+    background-color: rgb(14, 13, 13);
+    opacity: 0.6;
+}
+
+.top-left {
+    position: absolute;
+    font-weight: bold;
+    color: white;
+    top: 10%;
+    left: 1%;
+  }
+
+.top-right {
+    position: absolute;
+    background-color: rgb(40, 39, 39);
+    opacity: initial;
+    border: 0;
+    border-radius: 15px;
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px 25px;
+    top: 40%;
+    right: 5%;
+    z-index: 1000;
 }
 
 .select-container {
@@ -46,7 +84,7 @@ label {
 }
 
 select {
-    width: 100%;
+    width: 15%;
     padding: 5px;
     font-size: 16px;
 }
