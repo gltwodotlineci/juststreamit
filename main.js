@@ -27,45 +27,39 @@ function populateTopMovie(content){
         title.textContent = data.title
         description.textContent = data.description
         button.textContent = "Détails"
-        button.id = "topMovieModal"
+        button.setAttribute("data-bs-target", "#topMovieModal")
         button.className = "modal-button"
         // Adding attributes to continer
         topMovieContent.appendChild(imageMovie)
         topMovieContent.appendChild(title)
         topMovieContent.append(button)
         topMovieContent.appendChild(description)
-        button.addEventListener('click', () => showMovieDetails(content));
+        button.addEventListener('click', () => {
+            showMovieDetails(data)
+            const modal = new bootstrap.Modal(document.getElementById('modalMovie'));
+            modal.show();
+        });
+
     })
 }
 
-
-function showMovieDetails(content) {
-    // Creating modal with Top rated movie'
-    const modal = document.getElementById('topMovieModal');
-
-    // Populate modal content
-    modal.innerHTML = `
-    <div id="mainMovieMod" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <p>${content.title}</p>
-            <img src="${content.image_url}" alt="${content.title}">
-            <p>Réalisé par ${content.directors}</p>
-
-            <p>${content.long_description}</p>
-            <p>Avec ${content.actors}</p>
-        
-            <button class="modal-button" id="close_modal_button">
-                Fermer
-            </button>
-        
-        </div>
-    </div>
-    `;
-    
-    // Open the modal
-    modal.style.display = 'block';
+function showMovieDetails(content){
+    fetch(content.url)
+    .then(response => response.json())
+    .then(data =>{
+        const title = document.getElementById('modalTitle')
+        title.textContent = data.title
+        const longDescription = document.getElementById("long-description")
+        longDescription.textContent = data.long_description
+        const imgMod = document.getElementById("img-modal")
+        imgMod.src = data.image_url
+        const directors = document.getElementById("movie-directors")
+        directors.textContent = data.directors
+        const actors = document.getElementById("actors")
+        actors.textContent = data.actors
+    })
 }
+
 
 // Calling and creating objects for 3 categories
 function createThreeCategories(){
@@ -113,8 +107,12 @@ function addMoviesToCat(categData, key){
         gridItem.appendChild(banner)
         gridItem.appendChild(imgMov)
         categs.appendChild(gridItem)
-        //button.addEventListener('click', () => showMovieDetails(categData));
-        }      
+        button.addEventListener('click', () => {
+            showMovieDetails(categData[i])
+            const modal = new bootstrap.Modal(document.getElementById('modalMovie'));
+            modal.show();
+        });
+    }      
 }
 
 // Providing movies by category
@@ -210,7 +208,12 @@ function itemsChoosedCategory(data){
         gridItem.appendChild(banner)
         gridItem.appendChild(imgMov)
         categoryDiv.append(gridItem)
-        button.addEventListener('click', () => showMovieDetails(data));
+        button.addEventListener('click', () => {
+            showMovieDetails(data[i])
+            const modal = new bootstrap.Modal(document.getElementById('modalMovie'));
+            modal.show();
+        });
+
     }
 }
 
