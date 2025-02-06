@@ -20,7 +20,7 @@ function populateTopMovie(content){
     .then(data =>{
         const topMovieContent = document.querySelector('#top-movie');
         const imageMovie = document.createElement('img')
-        const title = document.createElement('h4')
+        const title = document.createElement('h2')
         const button = document.createElement('button')
         let description = document.createElement("p")
         imageMovie.src = data.image_url
@@ -39,7 +39,6 @@ function populateTopMovie(content){
             const modal = new bootstrap.Modal(document.getElementById('modalMovie'));
             modal.show();
         });
-
     })
 }
 
@@ -47,15 +46,27 @@ function showMovieDetails(content){
     fetch(content.url)
     .then(response => response.json())
     .then(data =>{
-        const title = document.getElementById('modalTitle')
+        let title = document.getElementById('modalTitle')
         title.textContent = data.title
-        const longDescription = document.getElementById("long-description")
+        let yearAndGenres = document.getElementById('year-genres')
+        let year = data.year
+        let categ = data.genres
+        yearAndGenres.textContent = year + ' - ' + categ
+        let durationCountry = document.getElementById('duration-country')
+        let duration = data.duration
+        let countries = data.countries
+        durationCountry.textContent = duration + 'minutes - ' + '( ' + countries +' )'
+        let impbdScore = document.getElementById('imbd-score')
+        let score = data.imbd_score
+        impbdScore.textContent = "IMBD score: " + score + '/10'
+        let longDescription = document.getElementById("long-description")
         longDescription.textContent = data.long_description
-        const imgMod = document.getElementById("img-modal")
+        let imgMod = document.getElementById("img-modal")
         imgMod.src = data.image_url
-        const directors = document.getElementById("movie-directors")
-        directors.textContent = data.directors
-        const actors = document.getElementById("actors")
+        let directors = document.getElementById("movie-directors")
+        directors.textContent = `Réalisé par:
+        ${data.directors}`
+        let actors = document.getElementById("actors")
         actors.textContent = data.actors
     })
 }
@@ -65,10 +76,11 @@ function showMovieDetails(content){
 function createThreeCategories(){
     const categories = ['Drama', 'Comedy', 'Crime']
     for (let x = 0; x < categories.length; x++) {
-        const categoriesList = []
+        console.log("Etape 1? ", categories[x])
         fetch(`http://localhost:8000/api/v1/titles/?sort_by=-imdb_score&genre=${categories[x]}`)
             .then(response => response.json())
             .then(data =>{
+                let categoriesList = []
                 for (let i = 0; i < data.results.length; i++) {
                     categoriesList.push(data.results[i])                    
                 }
@@ -77,6 +89,7 @@ function createThreeCategories(){
                     .then(data2 => {
                     categoriesList.push(data2.results[0])
                     addMoviesToCat(categoriesList, categories[x])
+                    console.log("Check categoriesList", categoriesList, x)
                 })
         })
     }
@@ -85,7 +98,7 @@ function createThreeCategories(){
 
 // adding movies to every categorie and creating grids
 function addMoviesToCat(categData, key){
-    const categs = document.querySelector(`#${key}`)
+    let categs = document.querySelector(`#${key}`)
     for (let i = 0; i < categData.length; i++) {
         let gridItem = document.createElement('div')
         let banner = document.createElement('div')
@@ -101,22 +114,24 @@ function addMoviesToCat(categData, key){
         imgMov.style = "width:100%"
         title.textContent = categData[i].title
         button.id = categData[i].id
-        button.textContent = "Détails"
+        button.textContent = "Détails ---"
         banner.appendChild(title)        
         gridItem.appendChild(button)
         gridItem.appendChild(banner)
-        gridItem.appendChild(imgMov)
+        gridItem.appendChild(imgMov)        
         categs.appendChild(gridItem)
         button.addEventListener('click', () => {
             showMovieDetails(categData[i])
             const modal = new bootstrap.Modal(document.getElementById('modalMovie'));
             modal.show();
         });
-    }      
+    }
+    categs.appendChild(btVoirMoins)
+
 }
 
 // Providing movies by category
-function generalFetch(url){
+function generalFetch(url){ // Rename general fetch.
     fetch(url)
         .then(response => response.json())
         .then(data =>{
@@ -157,10 +172,10 @@ function fetchAndPopulateSelect() {
 
 // populating data for choosed category
 function populateCategory(chooseCat){
-    const ctegoryListData = []
     fetch(`http://localhost:8000/api/v1/titles/?sort_by=-imdb_score&genre=${chooseCat}`)
     .then(response => response.json())
     .then(data => {
+        let ctegoryListData = []
         for (let i = 0; i < data.results.length; i++) {
             ctegoryListData.push(data.results[i])
         }
