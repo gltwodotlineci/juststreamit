@@ -38,6 +38,13 @@ body {
 @media screen and (max-width: 1024px) {
     .grid-container {
         grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+    }
+    .grid-container .grid-item:nth-child(n+5) {
+        display: none;
+    }
+    .grid-container.show-more .grid-item:nth-child(n+5) {
+        display: block;
     }
 }
 
@@ -45,6 +52,13 @@ body {
 @media screen and (max-width: 780px) {
     .grid-container {
         grid-template-columns: repeat(1, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+    }
+    .grid-container .grid-item:nth-child(n+3) {
+        display: none;
+    }
+    .grid-container.show-more .grid-item:nth-child(n+3) {
+        display: block;
     }
 }
 
@@ -172,16 +186,22 @@ select {
 }
 
 
-.btn-voir-moins{
+.btn.btn-danger.ch1{
     position: relative;
-    background-color: #cd094c;
-    color: white;
     margin: 2%;
     font-weight: bold;
-    font-size: 18px;
+    font-size: 22px;
     left: 50%;
     -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
+    display: none;
+}
+.btn.btn-danger.ch2{
+    position: relative;
+    margin: 2%;
+    font-weight: bold;
+    font-size: 22px;
+    left: 50%;
     display: none;
 }
 
@@ -192,7 +212,10 @@ select {
     .btn.btn-danger {
         display: none;
     }
-    .btn-voir-moins{
+    .btn.btn-danger.ch1{
+        display: block;
+    }
+    .btn.btn-danger.ch2{
         display: block;
     }
 }

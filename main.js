@@ -114,7 +114,7 @@ function addMoviesToCat(categData, key){
         imgMov.style = "width:100%"
         title.textContent = categData[i].title
         button.id = categData[i].id
-        button.textContent = "Détails ---"
+        button.textContent = "Détails"
         banner.appendChild(title)        
         gridItem.appendChild(button)
         gridItem.appendChild(banner)
@@ -126,8 +126,6 @@ function addMoviesToCat(categData, key){
             modal.show();
         });
     }
-    categs.appendChild(btVoirMoins)
-
 }
 
 // Providing movies by category

@@ -25,16 +25,15 @@
     <div class="three-cat-movies" id="bestMovies"></div>
       <h3 class="category-title">Drame</h3>
       <div  class="grid-container" id="Drama"> </div>
-      <button type="button" class="btn-voir-moins">Voir moins</button>
+      <button type="button" class="btn btn-danger ch1">Voir plus</button>
 
       <h3 class="category-title">Comedie</h3>
       <div class="grid-container" id="Comedy"></div>
-      <button type="button" class="btn-voir-moins">Voir moins</button>
-
+      <button type="button" class="btn btn-danger ch1">Voir plus</button>
 
       <h3 class="category-title">Crime</h3>
       <div class="grid-container" id="Crime"></div>
-      <button type="button" class="btn-voir-moins">Voir moins</button>
+      <button type="button" class="btn btn-danger ch1">Voir plus</button>
 
     <div class="select-container" id="parent">
         <label class="category-title">Autre:</label>
@@ -42,7 +41,7 @@
     <h5 id="choosedTitle"></h5>
     <div class="grid-container" id="choosenCategory">
     </div>
-    <button type="button" class="btn-voir-moins">Voir moins</button>
+    <button type="button" class="btn btn-danger ch2">Voir plus</button>
 
 </div>
 
@@ -65,14 +64,21 @@
         <p style="font-weight: bold;"> Avec:</p>
         <p id="actors"></p>
         <div class="modal-footer">
-          <button type="button" class="btn btn-danger 1" style="font-weight: bold; font-size: 18px;" data-bs-dismiss="modal">Fermer</button>
+          <button type="button" class="btn btn-danger" style="font-weight: bold; font-size: 18px;" data-bs-dismiss="modal">Fermer</button>
         </div>
       </div>
     </div>
   </div>
 
 <script>
-       
+  document.querySelector('.ch1').addEventListener('click', function() {
+    // Toggle 'show-more' class on the grid container
+    document.querySelector('.grid-container').classList.toggle('show-more');
+    
+    // Optionally, change button text
+    this.textContent = this.textContent === "Voir plus" ? "Voir moins" : "Voir plus";
+  });
+
 </script>
 
 </body>
