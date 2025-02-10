@@ -25,15 +25,15 @@
     <div class="three-cat-movies" id="bestMovies"></div>
       <h3 class="category-title">Drame</h3>
       <div  class="grid-container" id="Drama"> </div>
-      <button type="button" class="btn btn-danger ch1">Voir plus</button>
+      <button type="button" class="btn btn-danger ch1" id="show-Drama">Voir plus</button>
 
       <h3 class="category-title">Comedie</h3>
       <div class="grid-container" id="Comedy"></div>
-      <button type="button" class="btn btn-danger ch1">Voir plus</button>
+      <button type="button" class="btn btn-danger ch1" id="show-Comedy">Voir plus</button>
 
       <h3 class="category-title">Crime</h3>
       <div class="grid-container" id="Crime"></div>
-      <button type="button" class="btn btn-danger ch1">Voir plus</button>
+      <button type="button" class="btn btn-danger ch1" id="show-Crime">Voir plus</button>
 
     <div class="select-container" id="parent">
         <label class="category-title">Autre:</label>
@@ -52,9 +52,9 @@
           <h5 class="modal-title" id="modalTitle"></h5>
           <i type="button" class="fa fa-close" style="font-size:30px;color:red" data-bs-dismiss="modal"></i>
           </div>
-        <p id="year-genres" ></p>
-        <p id="duration-country" ></p>
-        <p id="imbd-score" ></p>
+        <p id="year-genres" class="info-movie"></p>
+        <p id="duration-country" class="info-movie"></p>
+        <p id="imbd-score" class="info-movie"></p>
         <p style="font-weight: bold;"id="movie-directors"></p>
 
         <div class="modal-body">
@@ -71,16 +71,17 @@
   </div>
 
 <script>
-  document.querySelector('.ch1').addEventListener('click', function() {
-    // Toggle 'show-more' class on the grid container
-    document.querySelector('.grid-container').classList.toggle('show-more');
-    
-    // Optionally, change button text
-    this.textContent = this.textContent === "Voir plus" ? "Voir moins" : "Voir plus";
-  });
+
+// document.querySelector('.ch1').addEventListener('click', function() {
+//     // 'show-more' class on the grid container
+//     document.querySelector('.grid-container').classList.toggle('show-more');
+
+//     // Optionally, change button text
+//     this.textContent = this.textContent === "Voir plus" ? "Voir moins" : "Voir plus";
+//   });
 
 </script>
 
 </body>
 
-</html> 
+</html>

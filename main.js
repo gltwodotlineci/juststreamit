@@ -99,6 +99,9 @@ function createThreeCategories(){
 // adding movies to every categorie and creating grids
 function addMoviesToCat(categData, key){
     let categs = document.querySelector(`#${key}`)
+    let keyButtonId = 'show-' + key
+    showMoreLess(keyButtonId, key)
+
     for (let i = 0; i < categData.length; i++) {
         let gridItem = document.createElement('div')
         let banner = document.createElement('div')
@@ -228,6 +231,14 @@ function itemsChoosedCategory(data){
         });
 
     }
+}
+
+// showing more or less button in responsive case
+function showMoreLess(givenId, key){
+    document.getElementById(givenId).addEventListener('click', function(){
+        document.querySelector(`#${key}`).classList.toggle('show-more');
+        this.textContent = this.textContent === "Voir plus" ? "Voir moins" : "Voir plus";
+    });
 }
 
 

@@ -171,6 +171,12 @@ select {
     max-width: 100%; /* Assures that it' ll be kept inside the browser width */
     text-align: center;
 }
+/* Modal informations */
+.info-movie{
+    left: 5%;
+    font-weight: bold;
+    font-size: 16px;
+}
 
 .fa.fa-close {
     display: none;
