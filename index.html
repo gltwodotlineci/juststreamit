@@ -39,32 +39,41 @@
         <label class="category-title">Autre:</label>
     </div>
     <h5 id="choosedTitle"></h5>
-    <div class="grid-container" id="choosenCategory">
-    </div>
-    <button type="button" class="btn btn-danger ch2">Voir plus</button>
-
+    <div class="grid-container" id="choosenCategory"></div>
+    <button type="button" class="btn btn-danger ch2 no-data" id="show-choosed">Voir plus</button>
 </div>
 
 <div class="modal" tabindex="-1" id="modalMovie">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="modalTitle"></h5>
-          <i type="button" class="fa fa-close" style="font-size:30px;color:red" data-bs-dismiss="modal"></i>
-          </div>
-        <p id="year-genres" class="info-movie"></p>
-        <p id="duration-country" class="info-movie"></p>
-        <p id="imbd-score" class="info-movie"></p>
-        <p style="font-weight: bold;"id="movie-directors"></p>
+    <div class="modal-dialog"  style="max-width: 675px;">
 
-        <div class="modal-body">
-          <p id="long-description"></p>
+      <div class="modal-content">
+        <header>
+          <i type="button" class="fa fa-close"
+            style="font-size:30px;color:red; position: absolute;top:2%;right:2%;"
+            data-bs-dismiss="modal">
+          </i>
+        </header>
+        <div class="row">
+          <div class="col-lg-6 col-md-12" style="position: absolute;left:2%;">
+            <h3 class="modal-title" id="modalTitle"></h3>
+            <p id="year-genres" class="info-movie"></p>
+            <p id="duration-country" class="info-movie"></p>
+            <p id="imbd-score" class="info-movie"></p>
+            <p style="font-weight: bold;"id="movie-directors"></p>
+          </div>
+          <div class="col-lg-6 col-md-12"style="position: absolute;right:2%;">
+            <img id="img-modal">
+          </div>
         </div>
-        <img id="img-modal">
-        <p style="font-weight: bold;"> Avec:</p>
-        <p id="actors"></p>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger" style="font-weight: bold; font-size: 18px;" data-bs-dismiss="modal">Fermer</button>
+        <div class="row">
+          <div class="col-lg-12">
+            <p id="long-description"></p>
+            <p style="font-weight: bold;"> Avec:</p>
+            <p id="actors"></p>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" style="font-weight: bold; font-size: 18px;" data-bs-dismiss="modal">Fermer</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -72,13 +81,6 @@
 
 <script>
 
-// document.querySelector('.ch1').addEventListener('click', function() {
-//     // 'show-more' class on the grid container
-//     document.querySelector('.grid-container').classList.toggle('show-more');
-
-//     // Optionally, change button text
-//     this.textContent = this.textContent === "Voir plus" ? "Voir moins" : "Voir plus";
-//   });
 
 </script>
 

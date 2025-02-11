@@ -42,6 +42,8 @@ function populateTopMovie(content){
     })
 }
 
+
+// filling modal with movie informations
 function showMovieDetails(content){
     fetch(content.url)
     .then(response => response.json())
@@ -76,7 +78,6 @@ function showMovieDetails(content){
 function createThreeCategories(){
     const categories = ['Drama', 'Comedy', 'Crime']
     for (let x = 0; x < categories.length; x++) {
-        console.log("Etape 1? ", categories[x])
         fetch(`http://localhost:8000/api/v1/titles/?sort_by=-imdb_score&genre=${categories[x]}`)
             .then(response => response.json())
             .then(data =>{
@@ -89,7 +90,6 @@ function createThreeCategories(){
                     .then(data2 => {
                     categoriesList.push(data2.results[0])
                     addMoviesToCat(categoriesList, categories[x])
-                    console.log("Check categoriesList", categoriesList, x)
                 })
         })
     }
@@ -118,9 +118,9 @@ function addMoviesToCat(categData, key){
         title.textContent = categData[i].title
         button.id = categData[i].id
         button.textContent = "Détails"
-        banner.appendChild(title)        
-        gridItem.appendChild(button)
         gridItem.appendChild(banner)
+        gridItem.appendChild(title)        
+        gridItem.appendChild(button)
         gridItem.appendChild(imgMov)        
         categs.appendChild(gridItem)
         button.addEventListener('click', () => {
@@ -199,14 +199,21 @@ function afterSelectCat(choosed){
 
 
 function itemsChoosedCategory(data){
-    const categoryDiv = document.querySelector("#choosenCategory")    
+    let categoryDiv = document.querySelector("#choosenCategory")
+    let showButton = document.querySelector('#show-choosed');
     categoryDiv.innerHTML = ""
+
+    if (data.length > 0) {
+        showButton.classList.remove('no-data');
+    } else{
+        showButton.classList.add('no-data')
+    }
+
     // creating and populating 6 films grid
     for (let i = 0; i < data.length; i++) {
         let gridItem = document.createElement('div')
         let banner = document.createElement('div')
         banner.className = "cat-banner"
-
         gridItem.id = `choosenGrid${data[i].id}`
         gridItem.className = 'grid-item'
         let imgMov = document.createElement('img')
@@ -219,9 +226,9 @@ function itemsChoosedCategory(data){
         imgMov.src = data[i].image_url
         imgMov.style = "width:100%"
         title.textContent = data[i].title
-        banner.appendChild(title)
-        gridItem.appendChild(button)
         gridItem.appendChild(banner)
+        gridItem.appendChild(title)
+        gridItem.appendChild(button)
         gridItem.appendChild(imgMov)
         categoryDiv.append(gridItem)
         button.addEventListener('click', () => {
@@ -231,6 +238,7 @@ function itemsChoosedCategory(data){
         });
 
     }
+    showMoreLess('show-choosed','choosenCategory')
 }
 
 // showing more or less button in responsive case
