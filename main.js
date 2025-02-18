@@ -8,7 +8,7 @@ function bestMovie(){
     fetch("http://localhost:8000/api/v1/titles/?sort_by=-imdb_score")
         .then(response => response.json())
         .then(data => {
-            populateTopMovie(data.results[0])
+            populateTopMovie(data.results[2])
             createThreeCategories()
         })
 }
@@ -24,22 +24,40 @@ function populateTopMovie(content){
         const button = document.createElement('button')
         let description = document.createElement("p")
         imageMovie.src = data.image_url
+        imageMovie.className = "top-mv-img"
+        // imageMovie.style = "width:90%; height:760px; margin:1%;"
         title.textContent = data.title
         description.textContent = data.description
         button.textContent = "Détails"
         button.setAttribute("data-bs-target", "#topMovieModal")
         button.className = "modal-button"
         // Adding attributes to continer
-        topMovieContent.appendChild(imageMovie)
-        topMovieContent.appendChild(title)
-        topMovieContent.append(button)
-        topMovieContent.appendChild(description)
+        structAppearance(imageMovie, title, topMovieContent, description, button, topMovieContent)
+
         button.addEventListener('click', () => {
             showMovieDetails(data)
             const modal = new bootstrap.Modal(document.getElementById('modalMovie'));
             modal.show();
         });
     })
+}
+
+
+// creating the structure for the Top movie appereance
+function structAppearance(topImg, title, mainRow, description, btn, mainRow){
+    const row = document.createElement('div')
+    row.className = 'row-top'
+    const col1 = document.createElement('div')
+    const col2 = document.createElement('div')
+    col1.className = "top-img"
+    col2.className = "top-content"
+    col1.appendChild(topImg)
+    col2.appendChild(title)
+    col2.appendChild(description)
+    col2.appendChild(btn)
+    row.appendChild(col1)
+    row.appendChild(col2)
+    mainRow.appendChild(row)
 }
 
 
@@ -119,7 +137,7 @@ function addMoviesToCat(categData, key){
         button.id = categData[i].id
         button.textContent = "Détails"
         gridItem.appendChild(banner)
-        gridItem.appendChild(title)        
+        gridItem.appendChild(title)
         gridItem.appendChild(button)
         gridItem.appendChild(imgMov)        
         categs.appendChild(gridItem)
@@ -238,17 +256,25 @@ function itemsChoosedCategory(data){
         });
 
     }
-    showMoreLess('show-choosed','choosenCategory')
+    
 }
+
 
 // showing more or less button in responsive case
 function showMoreLess(givenId, key){
-    document.getElementById(givenId).addEventListener('click', function(){
+    console.log(document.getElementById(givenId))
+    function callShowButton(){
+        console.log("query selector - key: ", document.querySelector(`#${key}`), key)
         document.querySelector(`#${key}`).classList.toggle('show-more');
+        console.log("query selector - key: ", document.querySelector(`#${key}`), key)
         this.textContent = this.textContent === "Voir plus" ? "Voir moins" : "Voir plus";
-    });
+    }
+   // document.getElementById(givenId).removeEventListener('click', callShowButton);
+    document.getElementById(givenId).addEventListener('click', callShowButton);
 }
 
 
 // Call the function after the DOM is fully loaded
-document.addEventListener('DOMContentLoaded', bestMovie(), generalFetch(urlCat));
+document.addEventListener('DOMContentLoaded', bestMovie)
+document.addEventListener('DOMContentLoaded', () => generalFetch(urlCat))
+document.addEventListener('DOMContentLoaded', () => showMoreLess('show-choosed','choosenCategory'));
