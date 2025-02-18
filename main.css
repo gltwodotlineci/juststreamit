@@ -14,7 +14,28 @@ body {
     height: 100vh;
 }
 
+.head-bande {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    flex: 1;
+    max-width: 25%;
+}
+
+.logo img {
+    width: 100%;
+    height: auto;
+}
+
+.head-title-cont {
+    flex: 3;
+}
+
 .head-logo{
+    display: flex;
     width: 100%;
     height: 240px;
     margin-top: 3%;
@@ -26,6 +47,9 @@ body {
     color: white;
     font-family: 'Oswald';
     font-size: 50px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
     /* margin-left: 3%; */
 }
 
@@ -54,7 +78,8 @@ body {
 .category-title {
     align-items: center;
     gap: 5px;
-    margin: auto;
+    margin-top: 3%;
+    margin-bottom: 2%;
 }
 
 .top-grid-item {
@@ -132,6 +157,7 @@ select {
     margin: auto;
     font-size: 18px;
     padding: 10px 25px;
+    margin-left: auto;
 }
 
 .modal-dialog{
@@ -188,7 +214,6 @@ select {
     transform: translate(-50%, -50%);
 }
 
-
 .btn.btn-danger.ch1{
     position: relative;
     margin: 2%;
@@ -213,12 +238,12 @@ select {
 }
 
 
-/* Tablet breakpoint */
+/* desktop breakpoint */
 @media only screen and (max-width: 1024px) {
-    .head-bande .col-lg-3 img{
+    /* .head-bande{
         width: 60%;
         height: 60%;
-    }
+    } */
 
     .grid-container {
         grid-template-columns: repeat(2, 1fr);
@@ -246,17 +271,62 @@ select {
         display: block;
     }
 }
+.row-top {
+    display: grid;
+    gap: 20px;
+}
+
+.top-img {
+    display: flex;
+    max-height: 550px;
+    justify-content: center;
+    align-items: center;
+}
+
+.top-img img {
+    margin-top: 2%;
+    margin-bottom: 2%;
+    max-height: 400px;
+    width: 85%;
+}
+
+
+
+@media screen and (min-width: 780px) {
+    .row-top {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .top-img {
+        max-height: none;
+    }
+    .modal-button{
+        display: flex;
+        margin-right: 1%;
+    }
+}
+
 
 
 /* Mobile breakpoint */
 @media screen and (max-width: 780px) {
     .head-logo{
-        height: 120px;
+        height: 90px;
+    }
+
+    .head-title-cont {
+        display: none;
+    }
+
+    .logo {
+        display: flex;  
+        justify-content: center;
+        align-items: center; 
     }
 
     .logo img {
-        width: 40%;
-        height: 35%;
+        width: 90%;
+        height: 95%;
         display: block;
         margin: auto;
     }
@@ -295,4 +365,5 @@ select {
     .grid-container.show-more .grid-item:nth-child(n+3) {
         display: block;
     }
+
 }
