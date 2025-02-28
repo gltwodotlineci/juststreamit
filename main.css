@@ -7,11 +7,23 @@ body {
     font-family: Arial, sans-serif;
 }
 
-.main{
+main{
     position: relative;
     margin: 5%;
-    width: 90%;
+    max-width: 80%;
     height: 100vh;
+}
+
+
+header.head-bande{
+    position: relative;
+    z-index: 1041;
+    display: flex;
+    width: 100%;
+    height: 240px;
+    margin-top: 3%;
+    margin-bottom: 2%;
+    background-color: #61787F;
 }
 
 .head-bande {
@@ -32,15 +44,6 @@ body {
 
 .head-title-cont {
     flex: 3;
-}
-
-.head-logo{
-    display: flex;
-    width: 100%;
-    height: 240px;
-    margin-top: 3%;
-    margin-bottom: 2%;
-    background-color: #61787F;
 }
 
 .head-title{
@@ -106,10 +109,10 @@ body {
 
 .top-left {
     position: absolute;
-    font-size: 36px;
+    font-size: 20px;
     font-weight: bold;
     color: white;
-    top: 25%;
+    top: 20%;
     left: 3%;
   }
 
@@ -123,7 +126,7 @@ body {
     font-size: 18px;
     font-weight: bold;
     padding: 10px 25px;
-    top: 40%;
+    top: 35%;
     right: 5%;
     z-index: 1000;
 }
@@ -138,10 +141,40 @@ label {
 }
 
 select {
-    width: 15%;
-    padding: 5px;
-    font-size: 16px;
+    width: 25%;
+    padding: 10px;
+    font-size: 26px;
+    font-weight: bold;
+    background-color: white;
+    border: 2px solid black;
+    border-radius: 5px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+    text-align: left; 
+    outline: none;
 }
+
+/*dropdown arrow */
+select {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="black" d="M7 10l5 5 5-5H7z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 50px;
+    padding-right: 35px; 
+}
+
+/* Add hover effect */
+select:hover {
+    background-color: #f5f5f5;
+}
+
+/* Add focus effect */
+select:focus {
+    border-color: #007bff; 
+}
+
 
 .select-container{
     margin-bottom: 15px;
@@ -187,18 +220,34 @@ select {
   
 .modal-content {
     background-color: #fff;
+    font-family: Oswald;
     border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* box shadow to add depth */
     padding: 30px 50px;
     width: 600px;
     max-width: 100%;
     text-align: center;
 }
+
+.col-lg-6 p {
+    margin-bottom: 0;
+    text-align: left;
+  }
+  
 /* Modal informations */
 .info-movie{
     left: 5%;
     font-weight: bold;
-    font-size: 16px;
+    font-size: 12px;
+}
+
+.mv-dir{
+    margin-top: 10%;
+    margin-bottom: 10%;
+}
+
+.description-actors{
+    font-size: 10px;
+    text-align: left;
 }
 
 .fa.fa-close {
@@ -237,14 +286,13 @@ select {
     display: none !important;
 }
 
+.lg-descrip-2{
+    display: none;
+}
+
 
 /* desktop breakpoint */
 @media only screen and (max-width: 1024px) {
-    /* .head-bande{
-        width: 60%;
-        height: 60%;
-    } */
-
     .grid-container {
         grid-template-columns: repeat(2, 1fr);
         grid-template-rows: repeat(2, 1fr);
@@ -290,45 +338,71 @@ select {
     width: 85%;
 }
 
-
-
 @media screen and (min-width: 780px) {
     .row-top {
         grid-template-columns: 1fr 1fr;
     }
     
     .top-img {
-        max-height: none;
+        max-height: 150px;
     }
+
+    .top-img {
+        display: flex;
+        max-height: 550px;
+        justify-content: center;
+        align-items: center;
+    }
+
     .modal-button{
         display: flex;
         margin-right: 1%;
     }
+
+    .lg-descrip-1{
+        display: none;
+    }
+
+    .lg-descrip-2{
+        display: block;
+        font-size: 10px;
+    }
 }
-
-
 
 /* Mobile breakpoint */
 @media screen and (max-width: 780px) {
-    .head-logo{
-        height: 90px;
+    header.head-bande{
+        height: 100px;
+        display: flex;       
+        justify-content: center;
+        align-items: center;
+    }
+
+    header.head-bande > .head-bande {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
     }
 
     .head-title-cont {
-        display: none;
+        display: none; /* Hide the title */
     }
 
     .logo {
         display: flex;  
         justify-content: center;
-        align-items: center; 
+        align-items: center;
+        width: 100%;
+        height: 100%; /* Ensure it takes full height of the header */
     }
 
     .logo img {
-        width: 90%;
-        height: 95%;
+        height: 80%; /* Increase image size */
+        max-height: 100px; /* Prevent it from getting too large */
+        width: auto; /* Keep the aspect ratio */
         display: block;
-        margin: auto;
     }
     
     .top-img{
@@ -366,4 +440,20 @@ select {
         display: block;
     }
 
+    .lg-descrip-1{
+        display: none;
+    }
+
+    .lg-descrip-2{
+        display: block;
+        font-size: 10px;
+    }
+
+}
+
+/* forcing break point for desktop text */
+@media screen and (min-width: 1025px) {
+    .lg-descrip-2 {
+        display: none !important;
+    }
 }

@@ -80,12 +80,15 @@ function showMovieDetails(content){
         let score = data.imbd_score
         impbdScore.textContent = "IMBD score: " + score + '/10'
         let longDescription = document.getElementById("long-description")
+        let longDescription2 = document.getElementById("long-description2")
+
         longDescription.textContent = data.long_description
+        longDescription2.textContent = data.long_description
+
         let imgMod = document.getElementById("img-modal")
         imgMod.src = data.image_url
         let directors = document.getElementById("movie-directors")
-        directors.textContent = `Réalisé par:
-        ${data.directors}`
+        directors.textContent = data.directors
         let actors = document.getElementById("actors")
         actors.textContent = data.actors
     })
@@ -172,7 +175,6 @@ function fetchAndPopulateSelect() {
     const parent = document.querySelector('#parent');
     const selectList = document.createElement("select");
     selectList.id = "chooseCat"
-    // selectList.id = "SelectCategory"
     for (let i = 0; i < listResults.length; i++) {
         const item = listResults[i];
         const option = document.createElement('option');
@@ -240,7 +242,7 @@ function itemsChoosedCategory(data){
         let button = document.createElement('button')
         button.className = 'top-right'
         button.id = `choosed${data[i].id}`
-        button.textContent = "Détils"
+        button.textContent = "Détails"
         imgMov.src = data[i].image_url
         imgMov.style = "width:100%"
         title.textContent = data[i].title
