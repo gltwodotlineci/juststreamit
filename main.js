@@ -135,7 +135,7 @@ function addMoviesToCat(categData, key){
         let button = document.createElement('button')
         button.className = 'top-right'
         imgMov.src = categData[i].image_url
-        imgMov.style = "width:94%"
+        imgMov.style = "width:105%"
         title.textContent = categData[i].title
         button.id = categData[i].id
         button.textContent = "Détails"
@@ -176,8 +176,7 @@ function fetchAndPopulateSelect() {
     selectList.id = "chooseCat"
     for (let i = 0; i < listResults.length; i++) {
         const item = listResults[i];
-        const option = document.createElement('option');
-        option.value = item.name
+        let option = document.createElement('option');
         option.textContent = item.name;
         selectList.appendChild(option);
     }
@@ -228,6 +227,7 @@ function itemsChoosedCategory(data){
         gridItem.id = `choosenGrid${data[i].id}`
         gridItem.className = 'grid-item'
         let imgMov = document.createElement('img')
+        imgMov.className = 'cat-img'
         let title = document.createElement('h3')
         title.className = 'top-left'
         let button = document.createElement('button')
@@ -235,7 +235,7 @@ function itemsChoosedCategory(data){
         button.id = `choosed${data[i].id}`
         button.textContent = "Détails"
         imgMov.src = data[i].image_url
-        imgMov.style = "width:94%"
+        imgMov.style = "width:105%"
         title.textContent = data[i].title
         gridItem.appendChild(banner)
         gridItem.appendChild(title)
