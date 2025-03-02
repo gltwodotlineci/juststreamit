@@ -35,33 +35,36 @@
       </div>
     </div>
   </section>
-  
-  <section>
-      <h3 class="category-title">Drame</h3>
-      <div  class="grid-container" id="Drama"> </div>
-      <button type="button" class="btn btn-danger ch1" id="show-Drama">Voir plus</button>
-  </section>
 
-  <section>
-      <h3 class="category-title">Comedie</h3>
-      <div class="grid-container" id="Comedy"></div>
-      <button type="button" class="btn btn-danger ch1" id="show-Comedy">Voir plus</button>
-  </section>
+  <div class="categories-and-choices">
+    <section>
+        <h3 class="category-title">Drame</h3>
+        <div  class="grid-container" id="Drama"> </div>
+        <button type="button" class="btn btn-danger ch1" id="show-Drama">Voir plus</button>
+    </section>
 
-  <section>
-      <h3 class="category-title">Crime</h3>
-      <div class="grid-container" id="Crime"></div>
-      <button type="button" class="btn btn-danger ch1" id="show-Crime">Voir plus</button>
-  </section>
+    <section>
+        <h3 class="category-title">Comedie</h3>
+        <div class="grid-container" id="Comedy"></div>
+        <button type="button" class="btn btn-danger ch1" id="show-Comedy">Voir plus</button>
+    </section>
 
-  <section>
-    <div class="select-container" id="parent">
-        <label class="category-title">Autre:</label>
-    </div>
-    <h5 id="choosedTitle"></h5>
-    <div class="grid-container" id="choosenCategory"></div>
-    <button type="button" class="btn btn-danger ch2 no-data" id="show-choosed">Voir plus</button>
-  </section>
+    <section>
+        <h3 class="category-title">Crime</h3>
+        <div class="grid-container" id="Crime"></div>
+        <button type="button" class="btn btn-danger ch1" id="show-Crime">Voir plus</button>
+    </section>
+
+    <section>
+      <h3 class="category-title">Autres: 
+        <div class="select-container" id="parent"></div>
+      </h3>
+      
+      <h5 id="choosedTitle" class="category-title"></h5>
+      <div class="grid-container" id="choosenCategory"></div>
+      <button type="button" class="btn btn-danger ch2 no-data" id="show-choosed">Voir plus</button>
+    </section>
+  </div>
 
 </main>
 <div class="modal" tabindex="-1" id="modalMovie">

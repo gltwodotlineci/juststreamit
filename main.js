@@ -25,7 +25,6 @@ function populateTopMovie(content){
         let description = document.createElement("p")
         imageMovie.src = data.image_url
         imageMovie.className = "top-mv-img"
-        // imageMovie.style = "width:90%; height:760px; margin:1%;"
         title.textContent = data.title
         description.textContent = data.description
         button.textContent = "Détails"
@@ -80,8 +79,8 @@ function showMovieDetails(content){
         let score = data.imbd_score
         impbdScore.textContent = "IMBD score: " + score + '/10'
         let longDescription = document.getElementById("long-description")
+        // long description 2 for responsive case
         let longDescription2 = document.getElementById("long-description2")
-
         longDescription.textContent = data.long_description
         longDescription2.textContent = data.long_description
 
@@ -131,11 +130,12 @@ function addMoviesToCat(categData, key){
         gridItem.id = key + i
         let imgMov = document.createElement('img')
         let title = document.createElement('h3')
+        imgMov.className = 'cat-img'
         title.className = 'top-left'
         let button = document.createElement('button')
         button.className = 'top-right'
         imgMov.src = categData[i].image_url
-        imgMov.style = "width:100%"
+        imgMov.style = "width:94%"
         title.textContent = categData[i].title
         button.id = categData[i].id
         button.textContent = "Détails"
@@ -184,7 +184,6 @@ function fetchAndPopulateSelect() {
     }
     selectList.addEventListener('change', function() {
         oneCategory = []
-        afterSelectCat(this.value);
         populateCategory(this.value)
     });
     parent.appendChild(selectList)
@@ -210,13 +209,6 @@ function populateCategory(chooseCat){
     })
 
 }
-
-
-function afterSelectCat(choosed){
-    const title = document.querySelector("#choosedTitle")
-    title.textContent = choosed
-}
-
 
 function itemsChoosedCategory(data){
     let categoryDiv = document.querySelector("#choosenCategory")
@@ -244,7 +236,7 @@ function itemsChoosedCategory(data){
         button.id = `choosed${data[i].id}`
         button.textContent = "Détails"
         imgMov.src = data[i].image_url
-        imgMov.style = "width:100%"
+        imgMov.style = "width:94%"
         title.textContent = data[i].title
         gridItem.appendChild(banner)
         gridItem.appendChild(title)
@@ -256,11 +248,8 @@ function itemsChoosedCategory(data){
             const modal = new bootstrap.Modal(document.getElementById('modalMovie'));
             modal.show();
         });
-
     }
-    
 }
-
 
 // showing more or less button in responsive case
 function showMoreLess(givenId, key){
@@ -271,7 +260,7 @@ function showMoreLess(givenId, key){
         console.log("query selector - key: ", document.querySelector(`#${key}`), key)
         this.textContent = this.textContent === "Voir plus" ? "Voir moins" : "Voir plus";
     }
-   // document.getElementById(givenId).removeEventListener('click', callShowButton);
+
     document.getElementById(givenId).addEventListener('click', callShowButton);
 }
 
