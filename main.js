@@ -170,7 +170,6 @@ function generalFetch(url){ // Rename general fetch.
     )
 }
 
-
 function fetchAndPopulateSelect() {
     const parent = document.querySelector('#parent');
     const selectList = document.createElement("select");

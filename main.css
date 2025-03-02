@@ -142,6 +142,7 @@ header.head-bande{
 
 .select-container {
     margin-top: 30px;
+    flex-grow: 3;
 }
 
 label {
@@ -165,14 +166,7 @@ select {
     outline: none;
 }
 
-/*dropdown arrow */
-select {
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="black" d="M7 10l5 5 5-5H7z"/></svg>');
-    background-repeat: no-repeat;
-    background-position: right 10px center;
-    background-size: 50px;
-    padding-right: 35px; 
-}
+
 
 /* Add hover effect */
 select:hover {
@@ -353,6 +347,7 @@ option-select{
     width: 85%;
 }
 
+
 @media screen and (min-width: 780px) {
     .row-top {
         grid-template-columns: 1fr 1fr;
@@ -387,6 +382,7 @@ option-select{
         display: block;
         font-size: 10px;
     }
+
 }
 
 /* Mobile breakpoint */
@@ -474,11 +470,24 @@ option-select{
         font-size: 10px;
     }
 
+    .genres-choice{
+        display: none;
+    }
+
 }
 
 /* forcing break point for desktop text */
 @media screen and (min-width: 1025px) {
     .lg-descrip-2 {
         display: none !important;
+    }
+
+    /*dropdown arrow */
+    select {
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="black" d="M7 10l5 5 5-5H7z"/></svg>')!important;
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        background-size: 50px;
+        padding-right: 35px;
     }
 }
